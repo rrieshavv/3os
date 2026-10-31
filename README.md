@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Windows 12 Preview
 
-## Getting Started
+A browser desktop that boots like a real machine. It starts as **Windows 12**, and you can shut down and restart into **macOS** or **Linux**. Wallpaper, notes, and files stay in the session.
 
-First, run the development server:
+Glass panels, a few everyday apps, and a full switch between three operating systems. Nothing here leaves the tab.
+
+## Run it
+
+This repo uses [pnpm](https://pnpm.io).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Click or press Enter to skip boot and lock screens.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm build    # production build
+pnpm start    # serve the build
+pnpm lint     # eslint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Switch operating system
 
-## Learn More
+Each switch shuts the current desktop down and boots the one you pick.
 
-To learn more about Next.js, take a look at the following resources:
+- Welcome window → **Try macOS** / **Try Linux** / **Try Windows**
+- Settings → **Operating system**
+- Windows Start → power menu
+- Apple menu (macOS)
+- Linux system menu → power
+- Terminal: `switch windows`, `switch mac`, or `switch linux`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What’s in each desktop
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Windows 12** — centered taskbar, Start search, quick settings, and the usual window chrome.
 
-## Deploy on Vercel
+**macOS** — menu bar, Control Center, Spotlight (`⌘ Space`), Launchpad, a magnifying Dock, and traffic-light windows. `⌘Q` / `⌘W` close, `⌘M` minimizes, `⌘N` opens Finder, `⌘,` opens System Settings.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Linux** — GNOME-style top bar, Dash on the left, Activities overview (`Super`), and a system menu with Wi‑Fi, brightness, and power.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Boot, lock, and shutdown look different on each system too.
+
+## Apps
+
+| App | What it does |
+| --- | --- |
+| Welcome | Tour of the current desktop, plus buttons to try another OS |
+| Files / Finder | Folders, notes, and wallpapers you can set |
+| Notepad / TextEdit | A session-only text editor |
+| Terminal | A small shell (`help` lists commands) |
+| Settings | Wallpaper, accent, reduce motion, and OS switch |
+
+Pictures in Files can be set as wallpaper. Volume and brightness live in quick settings / Control Center / the GNOME system menu.
+
+## Project shape
+
+```
+app/                  Next.js App Router, global CSS
+components/apps/      Welcome, Files, Notepad, Terminal, Settings
+components/desktop/   Shell, windows, lock/boot/shutdown
+components/desktop/mac/
+components/desktop/linux/
+lib/                  Apps, files, OS metadata, types
+```
+
+The whole desktop is a client tree rooted at `components/desktop/Desktop.tsx`. OS chrome, insets, and copy live in `lib/os.ts`.
